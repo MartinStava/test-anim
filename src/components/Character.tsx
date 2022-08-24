@@ -7,8 +7,9 @@ import {
   animated,
   useSpringRef,
   useChain,
+  AnimationResult,
 } from "@react-spring/three"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Gunslinger, GunslingerAnimation } from "../models/Gunslinger"
 
 export enum Target {
@@ -41,7 +42,14 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
     to: { pz: deltaZ },
     config: { duration: deltaZ * 0.15 * 1000 },
     onRest() {
+      // setAnimation(GunslingerAnimation.Idle)
       setAnimation(GunslingerAnimation.Stop)
+    },
+    onChange(result: AnimationResult) {
+      // if ((result.value as any).pz < deltaZ - 0.5) {
+      //   return
+      // }
+      // setAnimation(GunslingerAnimation.Stop)
     },
     ref: pzRef,
   })
@@ -50,7 +58,6 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
 
   return (
     <animated.group position-z={pz}>
-      {/* <Soldier animation={animation} /> */}
       <Gunslinger animation={animation} />
     </animated.group>
   )

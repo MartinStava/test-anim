@@ -23,9 +23,9 @@ export enum GunslingerAnimation {
   Stop,
 }
 
-export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = ({
-  animation,
-}) => {
+export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
+  props
+) => {
   const group = useRef<THREE.Group>(null)
 
   const { nodes } = useGLTF("/gltf/m_gunslinger.glb") as GLTFResult
@@ -53,7 +53,10 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = ({
       return
     }
 
-    if (animation === prevAnimation || animation === GunslingerAnimation.None) {
+    if (
+      props.animation === prevAnimation ||
+      props.animation === GunslingerAnimation.None
+    ) {
       return
     }
 
@@ -67,9 +70,9 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = ({
         : stopAction
 
     const currentAction =
-      animation === GunslingerAnimation.Idle
+      props.animation === GunslingerAnimation.Idle
         ? idleAction
-        : animation === GunslingerAnimation.Run
+        : props.animation === GunslingerAnimation.Run
         ? runAction
         : stopAction
 
@@ -83,8 +86,8 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = ({
     }
     currentAction.play()
 
-    setPrevAnimation(animation)
-  }, [animation, prevAnimation])
+    setPrevAnimation(props.animation)
+  }, [props.animation, prevAnimation])
 
   return (
     <group ref={group} dispose={null}>

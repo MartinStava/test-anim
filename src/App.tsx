@@ -20,7 +20,7 @@ function App() {
         <Character target={target} />
       </Suspense>
       <mesh
-        position={[2, 0.5, 13.5]}
+        position={[0, 0.5, 7.5]}
         onClick={() => {
           setTarget(Target.A)
         }}

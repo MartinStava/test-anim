@@ -32,15 +32,17 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
 
   const start = () => {
     setAnimation(GunslingerAnimation.Run)
-    setDeltaZ(10)
+    setDeltaZ(5)
   }
+
+  const speed = 0.2
 
   const pzRef = useSpringRef()
   const { pz } = useSpring({
     delay: 0.25 * 1000 * 0.5 * 0.5,
     from: { pz: 0 },
     to: { pz: deltaZ },
-    config: { duration: deltaZ * 0.15 * 1000 },
+    config: { duration: deltaZ * speed * 1000 },
     onRest() {
       // setAnimation(GunslingerAnimation.Idle)
       setAnimation(GunslingerAnimation.Stop)

@@ -21,7 +21,7 @@ export enum Target {
 
 export const Character: React.FC<{ target: Target }> = ({ target }) => {
   const [animation, setAnimation] = useState(GunslingerAnimation.Idle)
-  const [deltaZ, setDeltaZ] = useState(0)
+  const [deltaRT, setDeltaRY] = useState(0)
 
   useEffect(() => {
     if (target === Target.Default) {
@@ -32,29 +32,16 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
 
   const start = () => {
     setAnimation(GunslingerAnimation.Stop)
-    setDeltaZ(Math.PI / 4.0)
+    setDeltaRY(Math.PI / 4.0)
   }
 
   const speed = 0.2
 
   const pzRef = useSpringRef()
   const { ry } = useSpring({
-    delay: 0, //1.0 * 1000,
-    // from: { pz: 0 },
-    // to: { pz: deltaZ },
     from: { ry: 0 },
-    to: { ry: deltaZ },
-    config: { duration: deltaZ * speed * 1000 },
-    onRest() {
-      // setAnimation(GunslingerAnimation.Idle)
-      setAnimation(GunslingerAnimation.Stop)
-    },
-    onChange(result: AnimationResult) {
-      // if ((result.value as any).pz < deltaZ - 0.5) {
-      //   return
-      // }
-      // setAnimation(GunslingerAnimation.Stop)
-    },
+    to: { ry: deltaRT },
+    config: { duration: deltaRT * speed * 1000 },
     ref: pzRef,
   })
 

@@ -31,17 +31,19 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
   }, [target])
 
   const start = () => {
-    setAnimation(GunslingerAnimation.Run)
-    setDeltaZ(5)
+    setAnimation(GunslingerAnimation.Stop)
+    setDeltaZ(Math.PI / 4.0)
   }
 
   const speed = 0.2
 
   const pzRef = useSpringRef()
-  const { pz } = useSpring({
-    delay: 0.25 * 1000 * 0.5 * 0.5,
-    from: { pz: 0 },
-    to: { pz: deltaZ },
+  const { ry } = useSpring({
+    delay: 0, //1.0 * 1000,
+    // from: { pz: 0 },
+    // to: { pz: deltaZ },
+    from: { ry: 0 },
+    to: { ry: deltaZ },
     config: { duration: deltaZ * speed * 1000 },
     onRest() {
       // setAnimation(GunslingerAnimation.Idle)
@@ -59,7 +61,7 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
   useChain([pzRef])
 
   return (
-    <animated.group position-z={pz}>
+    <animated.group rotation-y={ry}>
       <Gunslinger animation={animation} />
     </animated.group>
   )

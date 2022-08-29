@@ -78,7 +78,7 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
 
     currentAction.reset()
     if (prevAction) {
-      currentAction.crossFadeFrom(prevAction, 0.25 * 0.5, true)
+      currentAction.crossFadeFrom(prevAction, 0.125, true)
     }
     if (currentAction === stopAction) {
       currentAction.setLoop(LoopOnce, 1)

@@ -66,7 +66,7 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
 
     currentAction.reset()
     if (prevAction) {
-      currentAction.crossFadeFrom(prevAction, 0.125, true)
+      currentAction.crossFadeFrom(prevAction, 0.25, true)
     }
 
     currentAction.play()

@@ -14,7 +14,7 @@ export enum Target {
 }
 
 export const Character: React.FC<{ target: Target }> = ({ target }) => {
-  const [animation, setAnimation] = useState(GunslingerAnimation.Idle)
+  const [animation, setAnimation] = useState(GunslingerAnimation.Walk)
   const [deltaZ, setDeltaZ] = useState(0)
 
   useEffect(() => {
@@ -25,11 +25,11 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
   }, [target])
 
   const start = () => {
-    setAnimation(GunslingerAnimation.Run)
-    setDeltaZ(5)
+    setAnimation(GunslingerAnimation.Walk)
+    setDeltaZ(3)
   }
 
-  const speed = 0.2
+  const speed = 0.4
 
   const { z } = useSpring({
     delay: 0.125 * 0.5 * 1000,
@@ -37,7 +37,7 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
     to: { z: deltaZ },
     config: { duration: deltaZ * speed * 1000 },
     onRest() {
-      setAnimation(GunslingerAnimation.Stop)
+      setAnimation(GunslingerAnimation.Idle)
     },
   })
 

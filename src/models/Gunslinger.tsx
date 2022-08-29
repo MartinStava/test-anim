@@ -19,8 +19,7 @@ type GLTFResult = GLTF & {
 export enum GunslingerAnimation {
   None,
   Idle,
-  Run,
-  Stop,
+  Walk,
 }
 
 export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
@@ -34,22 +33,17 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
   const idleGltf = useGLTF("/gltf/a_gunslinger_idle.glb")
   const idleAnimation = useAnimations(idleGltf.animations, group)
 
-  // Run
-  const runGltf = useGLTF("/gltf/a_gunslinger_run.glb")
-  const runAnimation = useAnimations(runGltf.animations, group)
-
-  // Stop
-  const stopGltf = useGLTF("/gltf/a_gunslinger_run_stop.glb")
-  const stopAnimation = useAnimations(stopGltf.animations, group)
+  // Walk
+  const walkGltf = useGLTF("/gltf/a_gunslinger_walk.glb")
+  const walkAnimation = useAnimations(walkGltf.animations, group)
 
   const [prevAnimation, setPrevAnimation] = useState(GunslingerAnimation.None)
 
   useEffect(() => {
     const idleAction = idleAnimation.actions[idleAnimation.names[0]]
-    const runAction = runAnimation.actions[runAnimation.names[0]]
-    const stopAction = stopAnimation.actions[stopAnimation.names[0]]
+    const walkAction = walkAnimation.actions[walkAnimation.names[0]]
 
-    if (!idleAction || !runAction || !stopAction) {
+    if (!idleAction || !walkAction) {
       return
     }
 
@@ -65,30 +59,17 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
         ? null
         : prevAnimation === GunslingerAnimation.Idle
         ? idleAction
-        : prevAnimation === GunslingerAnimation.Run
-        ? runAction
-        : stopAction
+        : walkAction
 
     const currentAction =
-      props.animation === GunslingerAnimation.Idle
-        ? idleAction
-        : props.animation === GunslingerAnimation.Run
-        ? runAction
-        : stopAction
+      props.animation === GunslingerAnimation.Idle ? idleAction : walkAction
 
     currentAction.reset()
     if (prevAction) {
       currentAction.crossFadeFrom(prevAction, 0.125, true)
     }
-    if (currentAction === stopAction) {
-      currentAction.setLoop(LoopOnce, 1)
-      currentAction.clampWhenFinished = true
-    }
-    if (currentAction === runAction) {
-      runAction.play()
-    } else {
-      currentAction.play()
-    }
+
+    currentAction.play()
 
     setPrevAnimation(props.animation)
   }, [props.animation, prevAnimation])

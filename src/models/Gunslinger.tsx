@@ -25,9 +25,10 @@ export enum GunslingerAnimation {
   Stop,
 }
 
-export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
-  props
-) => {
+export const Gunslinger: React.FC<{
+  animation: GunslingerAnimation
+  timeScale: number
+}> = (props) => {
   const group = useRef<THREE.Group>(null)
 
   const { nodes } = useGLTF("/gltf/m_gunslinger.glb") as GLTFResult
@@ -111,8 +112,7 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
       currentAction.clampWhenFinished = true
     }
     if (currentAction === turnLeftAction) {
-      // currentAction.timeScale = 2.0
-      currentAction.timeScale = 3.0 // 90 & 225
+      currentAction.timeScale = props.timeScale
     }
 
     currentAction.play()

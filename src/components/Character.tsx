@@ -16,6 +16,9 @@ export enum Target {
 
 export const Character: React.FC<{ target: Target }> = ({ target }) => {
   const [animation, setAnimation] = useState(GunslingerAnimation.Idle)
+  const [timeScale, setTimeScale] = useState(2)
+  const [deltaX, setDeltaX] = useState(0)
+  const [deltaZ, setDeltaZ] = useState(0)
   const [deltaRY, setDeltaRY] = useState(0)
 
   useEffect(() => {
@@ -28,37 +31,31 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
   const start = () => {
     switch (target) {
       case Target.A: {
+        setTimeScale(2)
         setAnimation(GunslingerAnimation.TurnLeft)
         setDeltaRY(Math.PI / 4.0)
         break
       }
       case Target.B: {
+        setTimeScale(3)
         setAnimation(GunslingerAnimation.TurnLeft)
         setDeltaRY(Math.PI / 2.0)
         break
       }
       case Target.C: {
+        setTimeScale(3)
         setAnimation(GunslingerAnimation.TurnLeft)
         setDeltaRY((Math.PI / 4.0) * 3.0)
         break
       }
       case Target.D: {
+        setTimeScale(3)
         setAnimation(GunslingerAnimation.TurnLeft)
         setDeltaRY(Math.PI)
         break
       }
     }
   }
-
-  // const { x, z } = useSpring({
-  //   delay: 0.125 * 0.5 * 1000,
-  //   from: { x: 0, z: 0 },
-  //   to: { x: deltaX, z: deltaZ },
-  //   config: { duration: 7 * speed * 1000 },
-  //   onRest() {
-  //     setAnimation(GunslingerAnimation.Stop)
-  //   },
-  // })
 
   const speed = 0.2
 
@@ -69,12 +66,45 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
     config: { duration: deltaRY * speed * 1000 },
     onRest() {
       setAnimation(GunslingerAnimation.Run)
+
+      switch (target) {
+        case Target.A: {
+          setDeltaX(5)
+          setDeltaZ(5)
+          break
+        }
+        case Target.B: {
+          setDeltaX(5)
+          setDeltaZ(0)
+          break
+        }
+        case Target.C: {
+          setDeltaX(5)
+          setDeltaZ(-5)
+          break
+        }
+        case Target.D: {
+          setDeltaX(0)
+          setDeltaZ(-5)
+          break
+        }
+      }
+    },
+  })
+
+  const { x, z } = useSpring({
+    delay: 0.125 * 0.5 * 1000,
+    from: { x: 0, z: 0 },
+    to: { x: deltaX, z: deltaZ },
+    config: { duration: (deltaX > 0 && deltaZ > 0 ? 7 : 5) * speed * 1000 },
+    onRest() {
+      setAnimation(GunslingerAnimation.Stop)
     },
   })
 
   return (
-    <animated.group rotation-y={ry}>
-      <Gunslinger animation={animation} />
+    <animated.group position-x={x} position-z={z} rotation-y={ry}>
+      <Gunslinger animation={animation} timeScale={timeScale} />
     </animated.group>
   )
 }

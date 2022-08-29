@@ -37,7 +37,7 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
     to: { z: deltaZ },
     config: { duration: deltaZ * speed * 1000 },
     onRest() {
-      setAnimation(GunslingerAnimation.Idle)
+      setAnimation(GunslingerAnimation.Crouch)
     },
   })
 

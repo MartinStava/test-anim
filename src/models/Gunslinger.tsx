@@ -20,6 +20,8 @@ export enum GunslingerAnimation {
   None,
   Idle,
   Walk,
+  Crouch,
+  CrouchIdle,
 }
 
 export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
@@ -37,13 +39,23 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
   const walkGltf = useGLTF("/gltf/a_gunslinger_walk.glb")
   const walkAnimation = useAnimations(walkGltf.animations, group)
 
+  // Crouch
+  const crouchGltf = useGLTF("/gltf/a_gunslinger_crouch.glb")
+  const crouchAnimation = useAnimations(crouchGltf.animations, group)
+
+  // Crouch Idle
+  const crouchIdleGltf = useGLTF("/gltf/a_gunslinger_crouch_idle.glb")
+  const crouchIdleAnimation = useAnimations(crouchIdleGltf.animations, group)
+
   const [prevAnimation, setPrevAnimation] = useState(GunslingerAnimation.None)
 
   useEffect(() => {
     const idleAction = idleAnimation.actions[idleAnimation.names[0]]
     const walkAction = walkAnimation.actions[walkAnimation.names[0]]
+    const crouchAction = crouchAnimation.actions[walkAnimation.names[0]]
+    const crouchIdleAction = crouchIdleAnimation.actions[walkAnimation.names[0]]
 
-    if (!idleAction || !walkAction) {
+    if (!idleAction || !walkAction || !crouchAction || !crouchIdleAction) {
       return
     }
 
@@ -59,14 +71,33 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
         ? null
         : prevAnimation === GunslingerAnimation.Idle
         ? idleAction
+        : prevAnimation === GunslingerAnimation.Crouch
+        ? crouchAction
+        : prevAnimation === GunslingerAnimation.CrouchIdle
+        ? crouchIdleAction
         : walkAction
 
     const currentAction =
-      props.animation === GunslingerAnimation.Idle ? idleAction : walkAction
+      props.animation === GunslingerAnimation.Idle
+        ? idleAction
+        : props.animation === GunslingerAnimation.Crouch
+        ? crouchAction
+        : props.animation === GunslingerAnimation.CrouchIdle
+        ? crouchIdleAction
+        : walkAction
 
     currentAction.reset()
     if (prevAction) {
       currentAction.crossFadeFrom(prevAction, 0.25, true)
+    }
+    if (currentAction === crouchAction) {
+      currentAction.setLoop(LoopOnce, 1)
+      currentAction.clampWhenFinished = true
+      currentAction.timeScale = 1.5
+      currentAction.getMixer().addEventListener("finished", () => {
+        crouchIdleAction.reset()
+        crouchIdleAction.play()
+      })
     }
 
     currentAction.play()

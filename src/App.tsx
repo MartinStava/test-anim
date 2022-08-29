@@ -3,7 +3,6 @@ import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Stats } from "@react-three/drei"
 import { Suspense, useState } from "react"
 import { Character, Target } from "./components/Character"
-import { Gunslinger } from "./models/Gunslinger"
 
 function App() {
   const [target, setTarget] = useState(Target.Default)

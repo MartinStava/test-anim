@@ -80,15 +80,16 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
     if (prevAction) {
       currentAction.crossFadeFrom(prevAction, 0.125, true)
     }
-    if (currentAction === stopAction) {
+    if (currentAction === crouchAction) {
       currentAction.setLoop(LoopOnce, 1)
       currentAction.clampWhenFinished = true
+      currentAction.timeScale = 1.5
+      currentAction.getMixer().addEventListener("finished", () => {
+        crouchIdleAction.reset()
+        crouchIdleAction.play()
+      })
     }
-    if (currentAction === runAction) {
-      runAction.play()
-    } else {
-      currentAction.play()
-    }
+    currentAction.play()
 
     setPrevAnimation(props.animation)
   }, [props.animation, prevAnimation])

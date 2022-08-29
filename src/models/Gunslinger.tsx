@@ -19,6 +19,8 @@ type GLTFResult = GLTF & {
 export enum GunslingerAnimation {
   None,
   Idle,
+  TurnLeft,
+  TurnRight,
   Run,
   Stop,
 }
@@ -34,6 +36,14 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
   const idleGltf = useGLTF("/gltf/a_gunslinger_idle.glb")
   const idleAnimation = useAnimations(idleGltf.animations, group)
 
+  // Turn Left
+  const turnLeftGltf = useGLTF("/gltf/a_gunslinger_turn_left.glb")
+  const turnLeftAnimation = useAnimations(turnLeftGltf.animations, group)
+
+  // Turn Right
+  const turnRightGltf = useGLTF("/gltf/a_gunslinger_turn_right.glb")
+  const turnRightAnimation = useAnimations(turnRightGltf.animations, group)
+
   // Run
   const runGltf = useGLTF("/gltf/a_gunslinger_run.glb")
   const runAnimation = useAnimations(runGltf.animations, group)
@@ -47,9 +57,17 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
   useEffect(() => {
     const idleAction = idleAnimation.actions[idleAnimation.names[0]]
     const runAction = runAnimation.actions[runAnimation.names[0]]
+    const turnLeftAction = turnLeftAnimation.actions[runAnimation.names[0]]
+    const turnRightAction = turnRightAnimation.actions[runAnimation.names[0]]
     const stopAction = stopAnimation.actions[stopAnimation.names[0]]
 
-    if (!idleAction || !runAction || !stopAction) {
+    if (
+      !idleAction ||
+      !runAction ||
+      !stopAction ||
+      !turnLeftAction ||
+      !turnRightAction
+    ) {
       return
     }
 
@@ -67,6 +85,10 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
         ? idleAction
         : prevAnimation === GunslingerAnimation.Run
         ? runAction
+        : prevAnimation === GunslingerAnimation.TurnLeft
+        ? turnLeftAction
+        : prevAnimation === GunslingerAnimation.TurnRight
+        ? turnRightAction
         : stopAction
 
     const currentAction =
@@ -74,6 +96,10 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
         ? idleAction
         : props.animation === GunslingerAnimation.Run
         ? runAction
+        : props.animation === GunslingerAnimation.TurnLeft
+        ? turnLeftAction
+        : props.animation === GunslingerAnimation.TurnRight
+        ? turnRightAction
         : stopAction
 
     currentAction.reset()
@@ -84,11 +110,12 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
       currentAction.setLoop(LoopOnce, 1)
       currentAction.clampWhenFinished = true
     }
-    if (currentAction === runAction) {
-      runAction.play()
-    } else {
-      currentAction.play()
+    if (currentAction === turnLeftAction) {
+      // currentAction.timeScale = 2.0
+      currentAction.timeScale = 3.0 // 90 & 225
     }
+
+    currentAction.play()
 
     setPrevAnimation(props.animation)
   }, [props.animation, prevAnimation])

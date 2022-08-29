@@ -20,7 +20,8 @@ export enum GunslingerAnimation {
   None,
   Idle,
   Run,
-  Stop,
+  Crouch,
+  CrouchIdle,
 }
 
 export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
@@ -38,18 +39,24 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
   const runGltf = useGLTF("/gltf/a_gunslinger_run.glb")
   const runAnimation = useAnimations(runGltf.animations, group)
 
-  // Stop
-  const stopGltf = useGLTF("/gltf/a_gunslinger_run_stop.glb")
-  const stopAnimation = useAnimations(stopGltf.animations, group)
+  // Crouch
+  const crouchGltf = useGLTF("/gltf/a_gunslinger_crouch.glb")
+  const crouchAnimation = useAnimations(crouchGltf.animations, group)
+
+  // Crouch Idle
+  const crouchIdleGltf = useGLTF("/gltf/a_gunslinger_crouch_idle.glb")
+  const crouchIdleAnimation = useAnimations(crouchIdleGltf.animations, group)
 
   const [prevAnimation, setPrevAnimation] = useState(GunslingerAnimation.None)
 
   useEffect(() => {
     const idleAction = idleAnimation.actions[idleAnimation.names[0]]
     const runAction = runAnimation.actions[runAnimation.names[0]]
-    const stopAction = stopAnimation.actions[stopAnimation.names[0]]
+    const crouchAction = crouchAnimation.actions[crouchAnimation.names[0]]
+    const crouchIdleAction =
+      crouchIdleAnimation.actions[crouchIdleAnimation.names[0]]
 
-    if (!idleAction || !runAction || !stopAction) {
+    if (!idleAction || !runAction || !crouchAction || !crouchIdleAction) {
       return
     }
 
@@ -65,16 +72,20 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
         ? null
         : prevAnimation === GunslingerAnimation.Idle
         ? idleAction
-        : prevAnimation === GunslingerAnimation.Run
-        ? runAction
-        : stopAction
+        : prevAnimation === GunslingerAnimation.Crouch
+        ? crouchAction
+        : prevAnimation === GunslingerAnimation.CrouchIdle
+        ? crouchIdleAction
+        : runAction
 
     const currentAction =
       props.animation === GunslingerAnimation.Idle
         ? idleAction
-        : props.animation === GunslingerAnimation.Run
-        ? runAction
-        : stopAction
+        : props.animation === GunslingerAnimation.Crouch
+        ? crouchAction
+        : props.animation === GunslingerAnimation.CrouchIdle
+        ? crouchIdleAction
+        : runAction
 
     currentAction.reset()
     if (prevAction) {

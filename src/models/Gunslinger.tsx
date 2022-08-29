@@ -34,24 +34,20 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
   const idleGltf = useGLTF("/gltf/a_gunslinger_idle.glb")
   const idleAnimation = useAnimations(idleGltf.animations, group)
 
-  // Idle to Run
-  const idleToRunGltf = useGLTF("/gltf/a_gunslinger_idle_to_run.glb")
-  const idleToRunAnimation = useAnimations(idleToRunGltf.animations, group)
-
   // Run
   const runGltf = useGLTF("/gltf/a_gunslinger_run.glb")
   const runAnimation = useAnimations(runGltf.animations, group)
 
   // Stop
-  // const stopGltf = useGLTF("/gltf/a_gunslinger_run_stop.glb")
-  // const stopAnimation = useAnimations(stopGltf.animations, group)
+  const stopGltf = useGLTF("/gltf/a_gunslinger_run_stop.glb")
+  const stopAnimation = useAnimations(stopGltf.animations, group)
 
   const [prevAnimation, setPrevAnimation] = useState(GunslingerAnimation.None)
 
   useEffect(() => {
     const idleAction = idleAnimation.actions[idleAnimation.names[0]]
     const runAction = runAnimation.actions[runAnimation.names[0]]
-    const stopAction = idleToRunAnimation.actions[idleToRunAnimation.names[0]]
+    const stopAction = stopAnimation.actions[stopAnimation.names[0]]
 
     if (!idleAction || !runAction || !stopAction) {
       return
@@ -87,11 +83,6 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
     if (currentAction === stopAction) {
       currentAction.setLoop(LoopOnce, 1)
       currentAction.clampWhenFinished = true
-      // currentAction.getMixer().addEventListener("finished", () => {
-      //   runAction.reset()
-      //   runAction.crossFadeFrom(currentAction, 0.125, true)
-      //   runAction.play()
-      // })
     }
     if (currentAction === runAction) {
       runAction.play()

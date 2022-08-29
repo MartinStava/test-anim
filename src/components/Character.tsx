@@ -7,7 +7,6 @@ import {
   animated,
   useSpringRef,
   useChain,
-  AnimationResult,
 } from "@react-spring/three"
 import { useEffect, useRef, useState } from "react"
 import { Gunslinger, GunslingerAnimation } from "../models/Gunslinger"
@@ -31,24 +30,24 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
   }, [target])
 
   const start = () => {
-    setAnimation(GunslingerAnimation.Stop)
-    setDeltaRY(Math.PI / 4.0)
+    setAnimation(GunslingerAnimation.Run)
+    setDeltaRY(5)
   }
 
   const speed = 0.2
 
-  const pzRef = useSpringRef()
-  const { ry } = useSpring({
-    from: { ry: 0 },
-    to: { ry: deltaRT },
+  const { z } = useSpring({
+    delay: 0.125 * 0.5 * 1000,
+    from: { z: 0 },
+    to: { z: deltaRT },
     config: { duration: deltaRT * speed * 1000 },
-    ref: pzRef,
+    onRest() {
+      setAnimation(GunslingerAnimation.Stop)
+    },
   })
 
-  useChain([pzRef])
-
   return (
-    <animated.group rotation-y={ry}>
+    <animated.group position-z={z}>
       <Gunslinger animation={animation} />
     </animated.group>
   )

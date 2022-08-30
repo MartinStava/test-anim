@@ -40,9 +40,8 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
       setAnimation(GunslingerAnimation.CrouchIdle)
     },
     onChange(current) {
-      return
       if (current.value.z > deltaZ - 1) {
-        setAnimation(GunslingerAnimation.Crouch)
+        setAnimation(GunslingerAnimation.Slide)
       }
     },
   })

@@ -20,7 +20,7 @@ export enum GunslingerAnimation {
   None,
   Idle,
   Run,
-  Crouch,
+  Slide,
   CrouchIdle,
 }
 
@@ -39,9 +39,9 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
   const runGltf = useGLTF("/gltf/a_gunslinger_run.glb")
   const runAnimation = useAnimations(runGltf.animations, group)
 
-  // Crouch
-  const crouchGltf = useGLTF("/gltf/a_gunslinger_crouch.glb")
-  const crouchAnimation = useAnimations(crouchGltf.animations, group)
+  // Slide
+  const slideGltf = useGLTF("/gltf/a_gunslinger_slide.glb")
+  const slideAnimation = useAnimations(slideGltf.animations, group)
 
   // Crouch Idle
   const crouchIdleGltf = useGLTF("/gltf/a_gunslinger_crouch_idle.glb")
@@ -52,11 +52,11 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
   useEffect(() => {
     const idleAction = idleAnimation.actions[idleAnimation.names[0]]
     const runAction = runAnimation.actions[runAnimation.names[0]]
-    const crouchAction = crouchAnimation.actions[crouchAnimation.names[0]]
+    const slideAction = slideAnimation.actions[slideAnimation.names[0]]
     const crouchIdleAction =
       crouchIdleAnimation.actions[crouchIdleAnimation.names[0]]
 
-    if (!idleAction || !runAction || !crouchAction || !crouchIdleAction) {
+    if (!idleAction || !runAction || !slideAction || !crouchIdleAction) {
       return
     }
 
@@ -72,8 +72,8 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
         ? null
         : prevAnimation === GunslingerAnimation.Idle
         ? idleAction
-        : prevAnimation === GunslingerAnimation.Crouch
-        ? crouchAction
+        : prevAnimation === GunslingerAnimation.Slide
+        ? slideAction
         : prevAnimation === GunslingerAnimation.CrouchIdle
         ? crouchIdleAction
         : runAction
@@ -81,8 +81,8 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
     const currentAction =
       props.animation === GunslingerAnimation.Idle
         ? idleAction
-        : props.animation === GunslingerAnimation.Crouch
-        ? crouchAction
+        : props.animation === GunslingerAnimation.Slide
+        ? slideAction
         : props.animation === GunslingerAnimation.CrouchIdle
         ? crouchIdleAction
         : runAction
@@ -90,15 +90,6 @@ export const Gunslinger: React.FC<{ animation: GunslingerAnimation }> = (
     currentAction.reset()
     if (prevAction) {
       currentAction.crossFadeFrom(prevAction, 0.125, true)
-    }
-    if (currentAction === crouchAction) {
-      currentAction.setLoop(LoopOnce, 1)
-      currentAction.clampWhenFinished = true
-      currentAction.timeScale = 1.5
-      currentAction.getMixer().addEventListener("finished", () => {
-        crouchIdleAction.reset()
-        crouchIdleAction.play()
-      })
     }
     currentAction.play()
 

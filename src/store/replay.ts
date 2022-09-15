@@ -14,5 +14,5 @@ export const useReplayStore = create<ReplayState>((set) => ({
     timeline: [{}, {}, {}],
   },
 
-  next: () => set((state) => ({ turn: { id: "test" } })),
+  next: () => set((state) => ({ turn: { id: state.turn.id } })),
 }))

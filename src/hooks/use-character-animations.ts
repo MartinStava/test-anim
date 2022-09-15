@@ -1,6 +1,6 @@
 import { useAnimations, useGLTF } from "@react-three/drei"
 import { Object3D } from "three"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 export type CharacterAnimationName = "idle" | "run" | "stop"
 
@@ -28,6 +28,8 @@ export const useCharacterAnimations = (
   const stopGltf = useGLTF(getPath(characterName, "stop"))
   const stopAnimation = useAnimations(stopGltf.animations, root)
 
+  const previousAnimationNameRef = useRef<CharacterAnimationName>()
+
   useEffect(() => {
     const idleAction = idleAnimation.actions[idleAnimation.names[0]]
     const runAction = runAnimation.actions[runAnimation.names[0]]
@@ -45,7 +47,11 @@ export const useCharacterAnimations = (
         : stopAction
 
     currentAction.reset()
-    currentAction.reset()
+    if (previousAnimationNameRef.current) {
+      //... crossfade
+    }
     currentAction.play()
+
+    previousAnimationNameRef.current = animationName
   }, [characterName, animationName])
 }

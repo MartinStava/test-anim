@@ -35,5 +35,5 @@ export const useCharacterState = (
     currentAction.play()
 
     previousAnimationNameRef.current = state
-  }, [state])
+  }, [state, characterAnimations.actions])
 }

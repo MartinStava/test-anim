@@ -18,7 +18,6 @@ export const Character: React.FC<{
   const next = useGameStore((state) => state.next)
 
   useEffect(() => {
-    console.log(index)
     if (
       (index === 0 && props.characterId === firstCharacterId) ||
       (index === 1 && props.characterId === secondCharacterId)

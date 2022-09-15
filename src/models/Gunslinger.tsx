@@ -104,8 +104,9 @@ export const Gunslinger: React.FC<{
         : stopAction
 
     currentAction.reset()
+
     if (prevAction) {
-      currentAction.crossFadeFrom(prevAction, 0.125, true)
+      currentAction.crossFadeFrom(prevAction, 0.000125, true)
     }
     if (currentAction === stopAction) {
       currentAction.setLoop(LoopOnce, 1)
@@ -114,6 +115,9 @@ export const Gunslinger: React.FC<{
     if (currentAction === turnLeftAction) {
       currentAction.timeScale = props.timeScale
     }
+
+    runAction.timeScale *= 1.2
+    stopAction.timeScale *= 1.2
 
     currentAction.play()
 

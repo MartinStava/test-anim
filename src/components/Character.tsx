@@ -38,7 +38,7 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
       }
       case Target.B: {
         setTimeScale(3)
-        setAnimation(GunslingerAnimation.TurnLeft)
+        // setAnimation(GunslingerAnimation.TurnLeft)
         setDeltaRY(Math.PI / 2.0)
         break
       }
@@ -63,9 +63,12 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
     delay: 0.125 * 0.5 * 1000,
     from: { ry: 0 },
     to: { ry: deltaRY },
-    config: { duration: deltaRY * speed * 1000 },
-    onRest() {
+    config: { duration: deltaRY * speed * 1000 * 0.25 },
+    onStart() {
       setAnimation(GunslingerAnimation.Run)
+    },
+    onRest() {
+      // setAnimation(GunslingerAnimation.Run)
 
       switch (target) {
         case Target.A: {
@@ -96,7 +99,9 @@ export const Character: React.FC<{ target: Target }> = ({ target }) => {
     delay: 0.125 * 0.5 * 1000,
     from: { x: 0, z: 0 },
     to: { x: deltaX, z: deltaZ },
-    config: { duration: (deltaX > 0 && deltaZ > 0 ? 7 : 5) * speed * 1000 },
+    config: {
+      duration: ((deltaX > 0 && deltaZ > 0 ? 7 : 5) * speed * 1000) / 1.2,
+    },
     onRest() {
       setAnimation(GunslingerAnimation.Stop)
     },

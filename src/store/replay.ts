@@ -1,22 +1,35 @@
 import create from "zustand"
-import shortid from "shortid"
 
 interface ReplayState {
   turn: {
-    id: string
-    timeline?: TimelineUnit[]
+    timeline: TimelineUnit[]
+  }
+  replay: {
+    currentIndex: number
   }
 }
 
 interface TimelineUnit {
+  type: "movement"
   characterId: string
+  from: [x: number, z: number]
+  to: [x: number, z: number]
 }
 
-export const useReplayStore = create<ReplayState>((set) => ({
+export const useReplayStore = create<ReplayState>((set, get) => ({
   turn: {
-    id: shortid(),
-    timeline: [{ characterId: shortid() }],
+    timeline: [
+      {
+        type: "movement",
+        characterId: "character1",
+        from: [0, 0],
+        to: [0, 5],
+      },
+    ],
   },
-
-  next: () => set((state) => ({ turn: { id: state.turn.id } })),
+  replay: { currentIndex: -1 },
+  next: () =>
+    set((state) => ({
+      replay: { currentIndex: state.replay.currentIndex + 1 },
+    })),
 }))

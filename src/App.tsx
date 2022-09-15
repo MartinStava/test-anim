@@ -2,28 +2,25 @@ import "./App.css"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Stats } from "@react-three/drei"
 import { Suspense, useState } from "react"
-import { Character, State } from "./components/Character"
+import { Character } from "./components/Character"
 
 function App() {
-  const [target, setTarget] = useState(State.Default)
-
   const [hovered, setHover] = useState(false)
 
   return (
     <Canvas>
       <OrbitControls />
-      <gridHelper args={[100, 100]} />
+      <gridHelper args={[50, 50]} />
       <Stats />
       <directionalLight position={[0, 10, 10]} />
       <ambientLight intensity={0.25} />
       <Suspense fallback={null}>
-        <Character target={target} />
+        <Character id={"character1"} />
       </Suspense>
-
       <mesh
         position={[7.5, 0.5, 0.0]}
         onClick={() => {
-          setTarget(State.Start)
+          console.log("now")
         }}
         onPointerOver={(event) => setHover(true)}
         onPointerOut={(event) => setHover(false)}

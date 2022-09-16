@@ -6,7 +6,9 @@ import { useSpring, animated } from "@react-spring/three"
 import { useEffect, useState } from "react"
 import { Vector2 } from "three"
 import { runSpeed } from "../config"
+import { CharacterState } from "../hooks/use-character-state"
 import { useGameStore } from "../stores/game"
+import { Gunslinger } from "./Gunslinger"
 
 export const Character: React.FC<{
   characterId: string
@@ -24,6 +26,8 @@ export const Character: React.FC<{
 
   const [destination, setDestination] = useState<Vector2>(origin)
 
+  const [animation, setAnimation] = useState<CharacterState>("idle")
+
   useEffect(() => {
     if (!replayState) {
       return
@@ -37,11 +41,14 @@ export const Character: React.FC<{
     config: {
       duration: origin.distanceTo(destination) * runSpeed,
     },
+    onStart() {
+      setAnimation("run")
+    },
   })
 
   return (
     <animated.group position-x={x} position-z={z}>
-      {props.children}
+      <Gunslinger state={animation} />
     </animated.group>
   )
 }

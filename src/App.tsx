@@ -26,9 +26,9 @@ function App() {
         <Character characterId={firstCharacterId}>
           <Gunslinger state={"idle"} />
         </Character>
-        <Character characterId={secondCharacterId}>
+        {/* <Character characterId={secondCharacterId}>
           <CompoWorker state={"idle"} />
-        </Character>
+        </Character> */}
       </Suspense>
 
       <mesh

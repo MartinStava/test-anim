@@ -11,7 +11,7 @@ import { useGameStore } from "./stores/game"
 function App() {
   const [hovered, setHover] = useState(false)
 
-  const next = useGameStore((state) => state.next)
+  const start = useGameStore((state) => state.start)
 
   return (
     <Canvas>
@@ -33,7 +33,7 @@ function App() {
 
       <mesh
         position={[7.5, 0.5, 0.0]}
-        onClick={next}
+        onClick={start}
         onPointerOver={(event) => setHover(true)}
         onPointerOut={(event) => setHover(false)}
       >

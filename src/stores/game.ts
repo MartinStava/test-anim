@@ -1,63 +1,33 @@
 import create from "zustand"
+import { Vector2 } from "three"
 import { firstCharacterId, secondCharacterId } from "../config"
 
 interface GameState {
-  state: {
-    characters: {
-      characterId: string
-      position: { x: number; z: number }
-    }[]
-    timeline: TimelineStep[]
-  }
+  origin: CharacterState[]
 
-  currentIndex: number
+  replay: CharacterState[]
 
-  getCurrentStep: () => TimelineStep | undefined
-
-  next: () => void
+  start: () => void
 }
 
-interface TimelineStep {
-  type: "movement"
+interface CharacterState {
   characterId: string
-  destination: { x: number; z: number }
+  position: Vector2
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
-  state: {
-    characters: [
-      { characterId: firstCharacterId, position: { x: 0, z: 0 } },
-      { characterId: secondCharacterId, position: { x: 0, z: -5 } },
-    ],
-    timeline: [
-      {
-        type: "movement",
-        characterId: firstCharacterId,
-        destination: { x: 0, z: 5 },
-      },
-      {
-        type: "movement",
-        characterId: secondCharacterId,
-        destination: { x: 0, z: 5 },
-      },
-    ],
-  },
+  origin: [
+    { characterId: firstCharacterId, position: new Vector2(0, 0) },
+    { characterId: secondCharacterId, position: new Vector2(0, -5) },
+  ],
 
-  getCurrentStep: () => {
-    const currentIndex = get().currentIndex
-    const timeline = get().state.timeline
+  replay: [],
 
-    if (currentIndex < 0 || currentIndex >= timeline.length) {
-      return undefined
-    }
-
-    return timeline[currentIndex]
-  },
-
-  currentIndex: -1,
-
-  next: () =>
-    set((state) => ({
-      currentIndex: state.currentIndex + 1,
+  start: () =>
+    set(() => ({
+      replay: [
+        { characterId: firstCharacterId, position: new Vector2(0, 5) },
+        { characterId: secondCharacterId, position: new Vector2(5, 5) },
+      ],
     })),
 }))

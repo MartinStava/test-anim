@@ -6,12 +6,12 @@ import { Character } from "./components/Character"
 import { CompoWorker } from "./components/CompoWorker"
 import { firstCharacterId, secondCharacterId } from "./config"
 import { Gunslinger } from "./components/Gunslinger"
-import { useReplayStore } from "./stores/replay"
+import { useGameStore } from "./stores/game"
 
 function App() {
   const [hovered, setHover] = useState(false)
 
-  const next = useReplayStore((state) => state.next)
+  const next = useGameStore((state) => state.next)
 
   return (
     <Canvas>

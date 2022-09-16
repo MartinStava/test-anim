@@ -7,26 +7,28 @@ interface GameState {
       characterId: string
       position: { x: number; z: number }
     }[]
+    timeline: TimelineStep[]
   }
 
-  currentTurn: {
-    timeline: {
-      type: "movement"
-      characterId: string
-      destination: { x: number; z: number }
-    }[]
-  }
+  currentIndex: number
+
+  getCurrentStep: () => TimelineStep | undefined
+
+  next: () => void
 }
 
-export const useGameStore = create<GameState>((_set) => ({
+interface TimelineStep {
+  type: "movement"
+  characterId: string
+  destination: { x: number; z: number }
+}
+
+export const useGameStore = create<GameState>((set, get) => ({
   state: {
     characters: [
       { characterId: firstCharacterId, position: { x: 0, z: 0 } },
       { characterId: secondCharacterId, position: { x: 0, z: -5 } },
     ],
-  },
-
-  currentTurn: {
     timeline: [
       {
         type: "movement",
@@ -40,4 +42,22 @@ export const useGameStore = create<GameState>((_set) => ({
       },
     ],
   },
+
+  getCurrentStep: () => {
+    const currentIndex = get().currentIndex
+    const timeline = get().state.timeline
+
+    if (currentIndex < 0 || currentIndex >= timeline.length) {
+      return undefined
+    }
+
+    return timeline[currentIndex]
+  },
+
+  currentIndex: -1,
+
+  next: () =>
+    set((state) => ({
+      currentIndex: state.currentIndex + 1,
+    })),
 }))

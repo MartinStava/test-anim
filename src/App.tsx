@@ -3,15 +3,15 @@ import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Stats } from "@react-three/drei"
 import { Suspense, useState } from "react"
 import { Character } from "./components/Character"
-import { useGameStore } from "./store/store"
 import { CompoWorker } from "./components/CompoWorker"
 import { firstCharacterId, secondCharacterId } from "./config"
 import { Gunslinger } from "./components/Gunslinger"
+import { useReplayStore } from "./stores/replay"
 
 function App() {
   const [hovered, setHover] = useState(false)
 
-  const next = useGameStore((state) => state.next)
+  const next = useReplayStore((state) => state.next)
 
   return (
     <Canvas>

@@ -10,50 +10,50 @@ import { CharacterState, useCharacterState } from "../hooks/use-character-state"
 
 type GLTFResult = GLTF & {
   nodes: {
-    Mesh001: THREE.SkinnedMesh
-    Mesh001_1: THREE.SkinnedMesh
-    Mesh001_2: THREE.SkinnedMesh
-    Mesh001_3: THREE.SkinnedMesh
-    Mesh006: THREE.SkinnedMesh
-    Mesh006_1: THREE.SkinnedMesh
-    brow_016: THREE.SkinnedMesh
-    Mesh009: THREE.SkinnedMesh
-    Mesh009_1: THREE.SkinnedMesh
-    Mesh007: THREE.SkinnedMesh
-    Mesh007_1: THREE.SkinnedMesh
-    Mesh010: THREE.SkinnedMesh
-    Mesh010_1: THREE.SkinnedMesh
-    Mesh012: THREE.SkinnedMesh
-    Mesh012_1: THREE.SkinnedMesh
-    Mesh012_2: THREE.SkinnedMesh
-    Mesh002: THREE.SkinnedMesh
-    Mesh002_1: THREE.SkinnedMesh
-    Mesh011: THREE.SkinnedMesh
-    Mesh011_1: THREE.SkinnedMesh
-    Mesh004: THREE.SkinnedMesh
-    Mesh004_1: THREE.SkinnedMesh
-    Mesh013: THREE.SkinnedMesh
-    Mesh013_1: THREE.SkinnedMesh
-    Mesh013_2: THREE.SkinnedMesh
-    Mesh013_3: THREE.SkinnedMesh
-    Mesh005: THREE.SkinnedMesh
-    Mesh005_1: THREE.SkinnedMesh
-    Mesh005_2: THREE.SkinnedMesh
-    tool_002: THREE.SkinnedMesh
-    Mesh: THREE.SkinnedMesh
-    Mesh_1: THREE.SkinnedMesh
-    Mesh_2: THREE.SkinnedMesh
-    mixamorig_Hips: THREE.Bone
+    Mesh205: THREE.SkinnedMesh
+    Mesh205_1: THREE.SkinnedMesh
+    Mesh205_2: THREE.SkinnedMesh
+    Mesh205_3: THREE.SkinnedMesh
+    Mesh210: THREE.SkinnedMesh
+    Mesh210_1: THREE.SkinnedMesh
+    brow016: THREE.SkinnedMesh
+    Mesh213: THREE.SkinnedMesh
+    Mesh213_1: THREE.SkinnedMesh
+    Mesh211: THREE.SkinnedMesh
+    Mesh211_1: THREE.SkinnedMesh
+    Mesh214: THREE.SkinnedMesh
+    Mesh214_1: THREE.SkinnedMesh
+    Mesh216: THREE.SkinnedMesh
+    Mesh216_1: THREE.SkinnedMesh
+    Mesh216_2: THREE.SkinnedMesh
+    Mesh206: THREE.SkinnedMesh
+    Mesh206_1: THREE.SkinnedMesh
+    Mesh215: THREE.SkinnedMesh
+    Mesh215_1: THREE.SkinnedMesh
+    Mesh208: THREE.SkinnedMesh
+    Mesh208_1: THREE.SkinnedMesh
+    Mesh217: THREE.SkinnedMesh
+    Mesh217_1: THREE.SkinnedMesh
+    Mesh217_2: THREE.SkinnedMesh
+    Mesh217_3: THREE.SkinnedMesh
+    Mesh209: THREE.SkinnedMesh
+    Mesh209_1: THREE.SkinnedMesh
+    Mesh209_2: THREE.SkinnedMesh
+    tool002: THREE.SkinnedMesh
+    Mesh204: THREE.SkinnedMesh
+    Mesh204_1: THREE.SkinnedMesh
+    Mesh204_2: THREE.SkinnedMesh
+    mixamorigHips: THREE.Bone
   }
   materials: {
     Worker_black: THREE.MeshStandardMaterial
-    Worker_leather: THREE.MeshStandardMaterial
     Worker_metal: THREE.MeshStandardMaterial
     Worker_neon: THREE.MeshStandardMaterial
-    Worker_skin: THREE.MeshStandardMaterial
+    Worker_leather: THREE.MeshStandardMaterial
     Worker_beard: THREE.MeshStandardMaterial
-    Doc_red_cross: THREE.MeshStandardMaterial
+    Worker_skin: THREE.MeshStandardMaterial
     ["skin.047"]: THREE.MeshStandardMaterial
+    Doc_red_cross: THREE.MeshStandardMaterial
     ["black.005"]: THREE.MeshStandardMaterial
     White: THREE.MeshStandardMaterial
     ["skin.046"]: THREE.MeshStandardMaterial
@@ -77,232 +77,232 @@ export const CompoWorker: React.FC<{
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">
         <group
-          name="dock_worker_002"
+          name="dock_worker002"
           rotation={[Math.PI / 2, 0, 0]}
           scale={0.02}
         />
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
-          <primitive object={nodes.mixamorig_Hips} />
-          <group name="belts_pockets_002">
+          <primitive object={nodes.mixamorigHips} />
+          <group name="belts_pockets002">
             <skinnedMesh
-              name="Mesh001"
-              geometry={nodes.Mesh001.geometry}
+              name="Mesh205"
+              geometry={nodes.Mesh205.geometry}
               material={materials.Worker_black}
-              skeleton={nodes.Mesh001.skeleton}
+              skeleton={nodes.Mesh205.skeleton}
             />
             <skinnedMesh
-              name="Mesh001_1"
-              geometry={nodes.Mesh001_1.geometry}
-              material={materials.Worker_leather}
-              skeleton={nodes.Mesh001_1.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh001_2"
-              geometry={nodes.Mesh001_2.geometry}
+              name="Mesh205_1"
+              geometry={nodes.Mesh205_1.geometry}
               material={materials.Worker_metal}
-              skeleton={nodes.Mesh001_2.skeleton}
+              skeleton={nodes.Mesh205_1.skeleton}
             />
             <skinnedMesh
-              name="Mesh001_3"
-              geometry={nodes.Mesh001_3.geometry}
+              name="Mesh205_2"
+              geometry={nodes.Mesh205_2.geometry}
               material={materials.Worker_neon}
-              skeleton={nodes.Mesh001_3.skeleton}
+              skeleton={nodes.Mesh205_2.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh205_3"
+              geometry={nodes.Mesh205_3.geometry}
+              material={materials.Worker_leather}
+              skeleton={nodes.Mesh205_3.skeleton}
             />
           </group>
-          <group name="body_016">
+          <group name="body016">
             <skinnedMesh
-              name="Mesh006"
-              geometry={nodes.Mesh006.geometry}
-              material={materials.Worker_skin}
-              skeleton={nodes.Mesh006.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh006_1"
-              geometry={nodes.Mesh006_1.geometry}
+              name="Mesh210"
+              geometry={nodes.Mesh210.geometry}
               material={materials.Worker_beard}
-              skeleton={nodes.Mesh006_1.skeleton}
-            />
-          </group>
-          <skinnedMesh
-            name="brow_016"
-            geometry={nodes.brow_016.geometry}
-            material={materials.Worker_beard}
-            skeleton={nodes.brow_016.skeleton}
-          />
-          <group name="cigarette_002">
-            <skinnedMesh
-              name="Mesh009"
-              geometry={nodes.Mesh009.geometry}
-              material={materials.Doc_red_cross}
-              skeleton={nodes.Mesh009.skeleton}
+              skeleton={nodes.Mesh210.skeleton}
             />
             <skinnedMesh
-              name="Mesh009_1"
-              geometry={nodes.Mesh009_1.geometry}
-              material={materials["skin.047"]}
-              skeleton={nodes.Mesh009_1.skeleton}
-            />
-          </group>
-          <group name="eye_012">
-            <skinnedMesh
-              name="Mesh007"
-              geometry={nodes.Mesh007.geometry}
-              material={materials["black.005"]}
-              skeleton={nodes.Mesh007.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh007_1"
-              geometry={nodes.Mesh007_1.geometry}
-              material={materials.White}
-              skeleton={nodes.Mesh007_1.skeleton}
-            />
-          </group>
-          <group name="eye_patch_002">
-            <skinnedMesh
-              name="Mesh010"
-              geometry={nodes.Mesh010.geometry}
-              material={materials.Worker_neon}
-              skeleton={nodes.Mesh010.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh010_1"
-              geometry={nodes.Mesh010_1.geometry}
-              material={materials.Worker_black}
-              skeleton={nodes.Mesh010_1.skeleton}
-            />
-          </group>
-          <group name="gloves_007">
-            <skinnedMesh
-              name="Mesh012"
-              geometry={nodes.Mesh012.geometry}
-              material={materials.Worker_leather}
-              skeleton={nodes.Mesh012.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh012_1"
-              geometry={nodes.Mesh012_1.geometry}
-              material={materials.Worker_metal}
-              skeleton={nodes.Mesh012_1.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh012_2"
-              geometry={nodes.Mesh012_2.geometry}
+              name="Mesh210_1"
+              geometry={nodes.Mesh210_1.geometry}
               material={materials.Worker_skin}
-              skeleton={nodes.Mesh012_2.skeleton}
-            />
-          </group>
-          <group name="hammer_002">
-            <skinnedMesh
-              name="Mesh002"
-              geometry={nodes.Mesh002.geometry}
-              material={materials["skin.046"]}
-              skeleton={nodes.Mesh002.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh002_1"
-              geometry={nodes.Mesh002_1.geometry}
-              material={materials["skin.044"]}
-              skeleton={nodes.Mesh002_1.skeleton}
-            />
-          </group>
-          <group name="hat_007">
-            <skinnedMesh
-              name="Mesh011"
-              geometry={nodes.Mesh011.geometry}
-              material={materials.Worker_black}
-              skeleton={nodes.Mesh011.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh011_1"
-              geometry={nodes.Mesh011_1.geometry}
-              material={materials.Worker_orange}
-              skeleton={nodes.Mesh011_1.skeleton}
-            />
-          </group>
-          <group name="screwdriver_002">
-            <skinnedMesh
-              name="Mesh004"
-              geometry={nodes.Mesh004.geometry}
-              material={materials.Worker_metal}
-              skeleton={nodes.Mesh004.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh004_1"
-              geometry={nodes.Mesh004_1.geometry}
-              material={materials.Worker_neon}
-              skeleton={nodes.Mesh004_1.skeleton}
-            />
-          </group>
-          <group name="shoes_010">
-            <skinnedMesh
-              name="Mesh013"
-              geometry={nodes.Mesh013.geometry}
-              material={materials.Worker_black}
-              skeleton={nodes.Mesh013.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh013_1"
-              geometry={nodes.Mesh013_1.geometry}
-              material={materials.Worker_leather}
-              skeleton={nodes.Mesh013_1.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh013_2"
-              geometry={nodes.Mesh013_2.geometry}
-              material={materials.Worker_metal}
-              skeleton={nodes.Mesh013_2.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh013_3"
-              geometry={nodes.Mesh013_3.geometry}
-              material={materials.Worker_neon}
-              skeleton={nodes.Mesh013_3.skeleton}
-            />
-          </group>
-          <group name="suit_002">
-            <skinnedMesh
-              name="Mesh005"
-              geometry={nodes.Mesh005.geometry}
-              material={materials.Worker_orange}
-              skeleton={nodes.Mesh005.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh005_1"
-              geometry={nodes.Mesh005_1.geometry}
-              material={materials.Worker_black}
-              skeleton={nodes.Mesh005_1.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh005_2"
-              geometry={nodes.Mesh005_2.geometry}
-              material={materials["skin.047"]}
-              skeleton={nodes.Mesh005_2.skeleton}
+              skeleton={nodes.Mesh210_1.skeleton}
             />
           </group>
           <skinnedMesh
-            name="tool_002"
-            geometry={nodes.tool_002.geometry}
-            material={materials.Worker_metal}
-            skeleton={nodes.tool_002.skeleton}
+            name="brow016"
+            geometry={nodes.brow016.geometry}
+            material={materials.Worker_beard}
+            skeleton={nodes.brow016.skeleton}
           />
-          <group name="wench_002">
+          <group name="cigarette002">
             <skinnedMesh
-              name="Mesh"
-              geometry={nodes.Mesh.geometry}
+              name="Mesh213"
+              geometry={nodes.Mesh213.geometry}
+              material={materials["skin.047"]}
+              skeleton={nodes.Mesh213.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh213_1"
+              geometry={nodes.Mesh213_1.geometry}
+              material={materials.Doc_red_cross}
+              skeleton={nodes.Mesh213_1.skeleton}
+            />
+          </group>
+          <group name="eye012">
+            <skinnedMesh
+              name="Mesh211"
+              geometry={nodes.Mesh211.geometry}
+              material={materials["black.005"]}
+              skeleton={nodes.Mesh211.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh211_1"
+              geometry={nodes.Mesh211_1.geometry}
+              material={materials.White}
+              skeleton={nodes.Mesh211_1.skeleton}
+            />
+          </group>
+          <group name="eye_patch002">
+            <skinnedMesh
+              name="Mesh214"
+              geometry={nodes.Mesh214.geometry}
               material={materials.Worker_black}
-              skeleton={nodes.Mesh.skeleton}
+              skeleton={nodes.Mesh214.skeleton}
             />
             <skinnedMesh
-              name="Mesh_1"
-              geometry={nodes.Mesh_1.geometry}
-              material={materials.Worker_metal}
-              skeleton={nodes.Mesh_1.skeleton}
-            />
-            <skinnedMesh
-              name="Mesh_2"
-              geometry={nodes.Mesh_2.geometry}
+              name="Mesh214_1"
+              geometry={nodes.Mesh214_1.geometry}
               material={materials.Worker_neon}
-              skeleton={nodes.Mesh_2.skeleton}
+              skeleton={nodes.Mesh214_1.skeleton}
+            />
+          </group>
+          <group name="gloves007">
+            <skinnedMesh
+              name="Mesh216"
+              geometry={nodes.Mesh216.geometry}
+              material={materials.Worker_metal}
+              skeleton={nodes.Mesh216.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh216_1"
+              geometry={nodes.Mesh216_1.geometry}
+              material={materials.Worker_leather}
+              skeleton={nodes.Mesh216_1.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh216_2"
+              geometry={nodes.Mesh216_2.geometry}
+              material={materials.Worker_skin}
+              skeleton={nodes.Mesh216_2.skeleton}
+            />
+          </group>
+          <group name="hammer002">
+            <skinnedMesh
+              name="Mesh206"
+              geometry={nodes.Mesh206.geometry}
+              material={materials["skin.046"]}
+              skeleton={nodes.Mesh206.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh206_1"
+              geometry={nodes.Mesh206_1.geometry}
+              material={materials["skin.044"]}
+              skeleton={nodes.Mesh206_1.skeleton}
+            />
+          </group>
+          <group name="hat007">
+            <skinnedMesh
+              name="Mesh215"
+              geometry={nodes.Mesh215.geometry}
+              material={materials.Worker_black}
+              skeleton={nodes.Mesh215.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh215_1"
+              geometry={nodes.Mesh215_1.geometry}
+              material={materials.Worker_orange}
+              skeleton={nodes.Mesh215_1.skeleton}
+            />
+          </group>
+          <group name="screwdriver002">
+            <skinnedMesh
+              name="Mesh208"
+              geometry={nodes.Mesh208.geometry}
+              material={materials.Worker_metal}
+              skeleton={nodes.Mesh208.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh208_1"
+              geometry={nodes.Mesh208_1.geometry}
+              material={materials.Worker_neon}
+              skeleton={nodes.Mesh208_1.skeleton}
+            />
+          </group>
+          <group name="shoes010">
+            <skinnedMesh
+              name="Mesh217"
+              geometry={nodes.Mesh217.geometry}
+              material={materials.Worker_black}
+              skeleton={nodes.Mesh217.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh217_1"
+              geometry={nodes.Mesh217_1.geometry}
+              material={materials.Worker_metal}
+              skeleton={nodes.Mesh217_1.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh217_2"
+              geometry={nodes.Mesh217_2.geometry}
+              material={materials.Worker_neon}
+              skeleton={nodes.Mesh217_2.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh217_3"
+              geometry={nodes.Mesh217_3.geometry}
+              material={materials.Worker_leather}
+              skeleton={nodes.Mesh217_3.skeleton}
+            />
+          </group>
+          <group name="suit002">
+            <skinnedMesh
+              name="Mesh209"
+              geometry={nodes.Mesh209.geometry}
+              material={materials.Worker_black}
+              skeleton={nodes.Mesh209.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh209_1"
+              geometry={nodes.Mesh209_1.geometry}
+              material={materials.Worker_orange}
+              skeleton={nodes.Mesh209_1.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh209_2"
+              geometry={nodes.Mesh209_2.geometry}
+              material={materials["skin.047"]}
+              skeleton={nodes.Mesh209_2.skeleton}
+            />
+          </group>
+          <skinnedMesh
+            name="tool002"
+            geometry={nodes.tool002.geometry}
+            material={materials.Worker_metal}
+            skeleton={nodes.tool002.skeleton}
+          />
+          <group name="wench002">
+            <skinnedMesh
+              name="Mesh204"
+              geometry={nodes.Mesh204.geometry}
+              material={materials.Worker_black}
+              skeleton={nodes.Mesh204.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh204_1"
+              geometry={nodes.Mesh204_1.geometry}
+              material={materials.Worker_metal}
+              skeleton={nodes.Mesh204_1.skeleton}
+            />
+            <skinnedMesh
+              name="Mesh204_2"
+              geometry={nodes.Mesh204_2.geometry}
+              material={materials.Worker_neon}
+              skeleton={nodes.Mesh204_2.skeleton}
             />
           </group>
         </group>

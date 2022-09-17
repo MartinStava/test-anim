@@ -21,16 +21,27 @@ export const Character: React.FC<{
   )
 
   /* Inner state */
-  const [moveFrom] = useState(netcode.origin?.position ?? new Vector2())
-  const [moveTo] = useState(netcode.origin?.position ?? new Vector2())
-  const [characterState, setCharacterState] = useState(CharacterState.Idle)
+  const [moveFrom, setMoveFrom] = useState(new Vector2())
+  const [moveTo, setMoveTo] = useState(new Vector2())
+  const [characterState] = useState(CharacterState.Idle)
 
   /* Character logic */
+  console.log("render")
   useEffect(() => {
-    setCharacterState(CharacterState.Idle)
-  }, [])
+    /* Procedural movement */
 
-  /* Procedural movement */
+    // Update moveFrom if changed
+    const originFrom = netcode.origin?.position ?? new Vector2()
+    if (!moveFrom.equals(originFrom)) {
+      console.log("set move from")
+      setMoveFrom(originFrom)
+      setMoveTo(originFrom)
+    }
+
+    //...
+  }, [moveFrom, netcode.origin])
+
+  /* Root motion */
   const { x, z } = useSpring({
     from: { x: moveFrom.x, z: moveFrom.y },
     to: { x: moveTo.x, z: moveTo.y },

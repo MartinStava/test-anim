@@ -20,6 +20,8 @@ export const useCharacterAnimations = (
   const previousAnimationNameRef = useRef<CharacterState>()
 
   useEffect(() => {
+    console.log("Change character state to", state)
+
     const currentAction = characterAnimations.actions["idle"]
     if (!currentAction) {
       return

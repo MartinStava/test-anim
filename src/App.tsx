@@ -3,9 +3,9 @@ import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Stats } from "@react-three/drei"
 import { Suspense, useState } from "react"
 import { Character } from "./components/Character"
-import { CompoWorker } from "./components/CompoWorker"
+import { CompoWorker } from "./components/Skins/CompoWorker"
 import { firstCharacterId, secondCharacterId } from "./config"
-import { Gunslinger } from "./components/Gunslinger"
+import { Gunslinger } from "./components/Skins/Gunslinger"
 import { useGameStore } from "./stores/game"
 
 function App() {
@@ -23,19 +23,15 @@ function App() {
 
       {/* Characters */}
       <Suspense fallback={null}>
-        <Character characterId={firstCharacterId}>
-          <Gunslinger state={"idle"} />
-        </Character>
-        {/* <Character characterId={secondCharacterId}>
-          <CompoWorker state={"idle"} />
-        </Character> */}
+        <Character characterId={firstCharacterId} skin={Gunslinger} />
+        <Character characterId={secondCharacterId} skin={CompoWorker} />
       </Suspense>
 
       <mesh
         position={[7.5, 0.5, 0.0]}
         onClick={start}
-        onPointerOver={(event) => setHover(true)}
-        onPointerOut={(event) => setHover(false)}
+        onPointerOver={() => setHover(true)}
+        onPointerOut={() => setHover(false)}
       >
         <boxGeometry />
         <meshStandardMaterial color={hovered ? "hotpink" : "grey"} />

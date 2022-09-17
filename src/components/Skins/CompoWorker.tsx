@@ -6,7 +6,8 @@ import * as THREE from "three"
 import { useRef } from "react"
 import { useGLTF } from "@react-three/drei"
 import { GLTF } from "three-stdlib"
-import { CharacterState, useCharacterState } from "../hooks/use-character-state"
+import { useCharacterAnimations } from "../../hooks/use-character-animations"
+import { CharacterSkin } from "./CharacterSkin"
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -62,16 +63,14 @@ type GLTFResult = GLTF & {
   }
 }
 
-export const CompoWorker: React.FC<{
-  state: CharacterState
-}> = (props) => {
+export const CompoWorker: CharacterSkin = (props) => {
   const group = useRef<THREE.Group>(null)
 
   const { nodes, materials, animations } = useGLTF(
     "/gltf/m_compo_worker.glb"
   ) as GLTFResult
 
-  useCharacterState(props.state, animations, group)
+  useCharacterAnimations(props.state, animations, group)
 
   return (
     <group ref={group} {...props} dispose={null}>

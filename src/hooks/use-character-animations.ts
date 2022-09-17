@@ -3,9 +3,14 @@ import { Object3D } from "three"
 import { useEffect, useRef } from "react"
 import { crossfadeDuration } from "../config"
 
-export type CharacterState = "idle" | "run" | "stop_run"
+export enum CharacterState {
+  Idle,
+  Running,
+}
 
-export const useCharacterState = (
+// type AnimationName = "idle" | "run" | "stop_run"
+
+export const useCharacterAnimations = (
   state: CharacterState,
   clips: THREE.AnimationClip[],
   root?: React.MutableRefObject<Object3D | undefined | null>
@@ -15,7 +20,7 @@ export const useCharacterState = (
   const previousAnimationNameRef = useRef<CharacterState>()
 
   useEffect(() => {
-    const currentAction = characterAnimations.actions[state]
+    const currentAction = characterAnimations.actions["idle"]
     if (!currentAction) {
       return
     }
@@ -31,6 +36,8 @@ export const useCharacterState = (
         currentAction.crossFadeFrom(previousAction, crossfadeDuration, true)
       }
     }
+
+    // TODO: Implement transition from running to idle via stop_run
 
     currentAction.play()
 

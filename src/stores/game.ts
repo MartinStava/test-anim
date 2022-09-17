@@ -7,7 +7,11 @@ interface GameState {
 
   replay: CharacterState[]
 
+  counter: number
+
   start: () => void
+
+  test: () => void
 }
 
 interface CharacterState {
@@ -23,11 +27,18 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   replay: [],
 
+  counter: 1,
+
   start: () =>
     set(() => ({
       replay: [
         { characterId: firstCharacterId, position: new Vector2(0, 5) },
         { characterId: secondCharacterId, position: new Vector2(5, 5) },
       ],
+    })),
+
+  test: () =>
+    set((state) => ({
+      counter: state.counter + 1,
     })),
 }))

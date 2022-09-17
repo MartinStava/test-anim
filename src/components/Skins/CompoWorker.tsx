@@ -73,7 +73,7 @@ export const CompoWorker: CharacterSkin = (props) => {
   useCharacterAnimations(props.state, animations, group)
 
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null} scale={0.5}>
       <group name="Scene">
         <group
           name="dock_worker002"

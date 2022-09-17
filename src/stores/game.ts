@@ -22,7 +22,7 @@ interface CharacterState {
 export const useGameStore = create<GameState>((set, get) => ({
   origin: [
     { characterId: firstCharacterId, position: new Vector2(0, 0) },
-    { characterId: secondCharacterId, position: new Vector2(0, -5) },
+    { characterId: secondCharacterId, position: new Vector2(3, 0) },
   ],
 
   replay: [],
@@ -33,7 +33,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     set(() => ({
       replay: [
         { characterId: firstCharacterId, position: new Vector2(0, 5) },
-        { characterId: secondCharacterId, position: new Vector2(5, 5) },
+        { characterId: secondCharacterId, position: new Vector2(3, 5) },
       ],
     })),
 

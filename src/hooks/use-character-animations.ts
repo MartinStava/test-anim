@@ -1,5 +1,5 @@
 import { useAnimations } from "@react-three/drei"
-import { Object3D } from "three"
+import { AnimationAction, Object3D } from "three"
 import { useEffect, useRef } from "react"
 import {
   crossfadeDuration,
@@ -9,8 +9,8 @@ import {
 } from "../config"
 
 export enum CharacterState {
-  Idle = 1,
-  Running = 2,
+  Idle = "Idle",
+  Running = "Running",
 }
 
 export const useCharacterAnimations = (
@@ -20,8 +20,18 @@ export const useCharacterAnimations = (
 ) => {
   const characterAnimations = useAnimations(clips, root)
 
-  /* Crossfade from previous state */
   const previousStateRef = useRef<CharacterState>()
+
+  /* Blending */
+  const previousActionRef = useRef<AnimationAction>()
+  const blend = (to: AnimationAction) => {
+    to.reset()
+    if (previousActionRef.current) {
+      to.crossFadeFrom(previousActionRef.current, crossfadeDuration, true)
+    }
+    to.play()
+    previousActionRef.current = to
+  }
 
   useEffect(() => {
     const actions = {
@@ -38,14 +48,11 @@ export const useCharacterAnimations = (
 
     switch (state) {
       case CharacterState.Idle: {
-        actions.idle.reset()
-        actions.idle.play()
+        blend(actions.idle)
         break
       }
       case CharacterState.Running: {
-        actions.run.reset()
-        actions.run.crossFadeFrom(actions.idle, crossfadeDuration, true)
-        actions.run.play()
+        blend(actions.run)
         break
       }
     }

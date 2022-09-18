@@ -2,7 +2,7 @@ import shallow from "zustand/shallow"
 import { useSpring, animated } from "@react-spring/three"
 import { useEffect, useState } from "react"
 import { Vector2 } from "three"
-import { runSpeed } from "../config"
+import { crossfadeDuration, runSpeed } from "../config"
 import { CharacterState } from "../hooks/use-character-animations"
 import { useGameStore } from "../stores/game"
 import { CharacterSkin } from "./Skins/CharacterSkin"
@@ -53,7 +53,9 @@ export const Character: React.FC<{
   }, [characterState, moveFrom, moveTo, netcode.origin, netcode.replay])
 
   /* Root motion */
+  // const [rested, setRested] = useState(true)
   const { x, z } = useSpring({
+    delay: crossfadeDuration * 0.5 * 1000,
     from: { x: moveFrom.x, z: moveFrom.y },
     to: { x: moveTo.x, z: moveTo.y },
     config: {

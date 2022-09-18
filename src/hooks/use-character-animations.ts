@@ -1,14 +1,17 @@
 import { useAnimations } from "@react-three/drei"
 import { Object3D } from "three"
 import { useEffect, useRef } from "react"
-import { crossfadeDuration } from "../config"
+import {
+  crossfadeDuration,
+  IdleAnimationName,
+  RunAnimationName,
+  StopRunAnimationName,
+} from "../config"
 
 export enum CharacterState {
-  Idle,
-  Running,
+  Idle = 1,
+  Running = 2,
 }
-
-// type AnimationName = "idle" | "run" | "stop_run"
 
 export const useCharacterAnimations = (
   state: CharacterState,
@@ -17,32 +20,47 @@ export const useCharacterAnimations = (
 ) => {
   const characterAnimations = useAnimations(clips, root)
 
-  const previousAnimationNameRef = useRef<CharacterState>()
+  /* Crossfade from previous state */
+  const previousStateRef = useRef<CharacterState>()
 
   useEffect(() => {
-    console.log("Change character state to", state)
+    const actions = {
+      idle: characterAnimations.actions[IdleAnimationName],
+      run: characterAnimations.actions[RunAnimationName],
+      stopRun: characterAnimations.actions[StopRunAnimationName],
+    }
 
-    const currentAction = characterAnimations.actions["idle"]
-    if (!currentAction) {
+    if (!actions.idle || !actions.run || !actions.stopRun) {
       return
     }
 
-    currentAction.reset()
+    console.log("Changing character state to", state)
 
-    /* Crossfade from previous state */
-    if (previousAnimationNameRef.current) {
-      const previousAction =
-        characterAnimations.actions[previousAnimationNameRef.current]
-
-      if (previousAction) {
-        currentAction.crossFadeFrom(previousAction, crossfadeDuration, true)
+    switch (state) {
+      case CharacterState.Idle: {
+        actions.idle.reset()
+        actions.idle.play()
+        break
+      }
+      case CharacterState.Running: {
+        actions.run.reset()
+        actions.run.crossFadeFrom(actions.idle, crossfadeDuration, true)
+        actions.run.play()
+        break
       }
     }
 
-    // TODO: Implement transition from running to idle via stop_run
+    /* Save previous state */
+    previousStateRef.current = state
 
-    currentAction.play()
+    /* Setup animation mixer listeners */
+    const finished = () => {
+      //...
+    }
+    characterAnimations.mixer.addEventListener("finished", finished)
 
-    previousAnimationNameRef.current = state
-  }, [state, characterAnimations.actions])
+    return () => {
+      characterAnimations.mixer.removeEventListener("finished", finished)
+    }
+  }, [state, characterAnimations])
 }

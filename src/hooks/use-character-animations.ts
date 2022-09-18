@@ -1,5 +1,5 @@
 import { useAnimations } from "@react-three/drei"
-import { AnimationAction, Object3D } from "three"
+import { AnimationAction, LoopOnce, Object3D } from "three"
 import { useEffect, useRef } from "react"
 import {
   crossfadeDuration,
@@ -22,33 +22,35 @@ export const useCharacterAnimations = (
 
   const previousStateRef = useRef<CharacterState>()
 
-  /* Blending */
   const previousActionRef = useRef<AnimationAction>()
-  const blend = (to: AnimationAction) => {
-    to.reset()
-    if (previousActionRef.current) {
-      to.crossFadeFrom(previousActionRef.current, crossfadeDuration, true)
-    }
-    to.play()
-    previousActionRef.current = to
-  }
 
   useEffect(() => {
     const actions = {
-      idle: characterAnimations.actions[IdleAnimationName],
-      run: characterAnimations.actions[RunAnimationName],
-      stopRun: characterAnimations.actions[StopRunAnimationName],
+      idle: characterAnimations.actions[IdleAnimationName]!,
+      run: characterAnimations.actions[RunAnimationName]!,
+      stopRun: characterAnimations.actions[StopRunAnimationName]!,
     }
 
-    if (!actions.idle || !actions.run || !actions.stopRun) {
-      return
+    const blend = (to: AnimationAction) => {
+      to.reset()
+      if (to === actions.stopRun) {
+        to.setLoop(LoopOnce, 1)
+        to.clampWhenFinished = true
+      }
+      if (previousActionRef.current) {
+        to.crossFadeFrom(previousActionRef.current, crossfadeDuration, true)
+      }
+      to.play()
+      previousActionRef.current = to
     }
-
-    console.log("Changing character state to", state)
 
     switch (state) {
       case CharacterState.Idle: {
-        blend(actions.idle)
+        if (previousStateRef.current === CharacterState.Running) {
+          blend(actions.stopRun)
+        } else {
+          blend(actions.idle)
+        }
         break
       }
       case CharacterState.Running: {
@@ -62,7 +64,7 @@ export const useCharacterAnimations = (
 
     /* Setup animation mixer listeners */
     const finished = () => {
-      //...
+      blend(actions.idle)
     }
     characterAnimations.mixer.addEventListener("finished", finished)
 

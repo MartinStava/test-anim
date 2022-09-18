@@ -25,6 +25,20 @@ export const Character: React.FC<{
   const [moveTo, setMoveTo] = useState(new Vector2())
   const [characterState, setCharacterState] = useState(CharacterState.Idle)
 
+  /* Root motion */
+  const [rested, setRested] = useState(false)
+  const { x, z } = useSpring({
+    delay: crossfadeDuration * 0.5 * 1000,
+    from: { x: moveFrom.x, z: moveFrom.y },
+    to: { x: moveTo.x, z: moveTo.y },
+    config: {
+      duration: moveFrom.distanceTo(moveTo) * runSpeed,
+    },
+    onRest() {
+      setRested(true)
+    },
+  })
+
   /* Character logic */
   useEffect(() => {
     /* Procedural movement */
@@ -42,26 +56,14 @@ export const Character: React.FC<{
     }
 
     // Switch character state
-    const newState = originPosition.equals(replayPosition)
-      ? CharacterState.Idle
-      : CharacterState.Running
+    const newState =
+      originPosition.equals(replayPosition) || rested
+        ? CharacterState.Idle
+        : CharacterState.Running
     if (newState !== characterState) {
       setCharacterState(newState)
     }
-
-    //...
-  }, [characterState, moveFrom, moveTo, netcode.origin, netcode.replay])
-
-  /* Root motion */
-  // const [rested, setRested] = useState(true)
-  const { x, z } = useSpring({
-    delay: crossfadeDuration * 0.5 * 1000,
-    from: { x: moveFrom.x, z: moveFrom.y },
-    to: { x: moveTo.x, z: moveTo.y },
-    config: {
-      duration: moveFrom.distanceTo(moveTo) * runSpeed,
-    },
-  })
+  }, [characterState, moveFrom, moveTo, netcode.origin, netcode.replay, rested])
 
   return (
     <animated.group position-x={x} position-z={z}>

@@ -6,6 +6,7 @@ import { crossfadeDuration, runSpeed } from "../config"
 import { CharacterState } from "../hooks/use-character-animations"
 import { useGameStore } from "../stores/game"
 import { CharacterSkin } from "./Skins/CharacterSkin"
+import { delay } from "../utils/timers"
 
 export const Character: React.FC<{
   characterId: string
@@ -26,16 +27,38 @@ export const Character: React.FC<{
   const [characterState, setCharacterState] = useState(CharacterState.Idle)
 
   /* Root motion */
-  const [rested, setRested] = useState(false)
+  const [finished, setFinished] = useState(false)
   const { x, z } = useSpring({
     delay: crossfadeDuration * 0.5 * 1000,
     from: { x: moveFrom.x, z: moveFrom.y },
-    to: { x: moveTo.x, z: moveTo.y },
-    config: {
-      duration: moveFrom.distanceTo(moveTo) * runSpeed,
-    },
-    onRest() {
-      setRested(true)
+    to: async (animate) => {
+      if (moveFrom.equals(moveTo)) {
+        return animate({
+          to: { x: moveTo.x, z: moveTo.y },
+          config: {
+            duration: 0,
+          },
+        })
+      }
+      if (finished) {
+        return
+      }
+
+      setCharacterState(CharacterState.Running)
+
+      await delay(crossfadeDuration * 0.5 * 1000)
+
+      // TODO: Replace with pathfinder
+      await animate({
+        to: { x: moveTo.x, z: moveTo.y },
+        config: {
+          duration: moveFrom.distanceTo(moveTo) * runSpeed,
+        },
+      })
+
+      setCharacterState(CharacterState.Idle)
+
+      setFinished(true)
     },
   })
 
@@ -54,16 +77,7 @@ export const Character: React.FC<{
     if (!moveTo.equals(replayPosition)) {
       setMoveTo(replayPosition)
     }
-
-    // Switch character state
-    const newState =
-      originPosition.equals(replayPosition) || rested
-        ? CharacterState.Idle
-        : CharacterState.Running
-    if (newState !== characterState) {
-      setCharacterState(newState)
-    }
-  }, [characterState, moveFrom, moveTo, netcode.origin, netcode.replay, rested])
+  }, [moveFrom, moveTo, netcode.origin, netcode.replay])
 
   return (
     <animated.group position-x={x} position-z={z}>

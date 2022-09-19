@@ -1,17 +1,18 @@
 import shallow from "zustand/shallow"
 import { useSpring, animated } from "@react-spring/three"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Vector2 } from "three"
 import { crossfadeDuration, runSpeed } from "../config"
 import { CharacterState } from "../hooks/use-character-animations"
 import { useGameStore } from "../stores/game"
 import { CharacterSkin } from "./Skins/CharacterSkin"
-import { delay } from "../utils/timers"
 
 export const Character: React.FC<{
   characterId: string
   skin: CharacterSkin
 }> = (props) => {
+  console.log("render")
+
   /* Netcode state */
   const netcode = useGameStore(
     (state) => ({
@@ -27,45 +28,45 @@ export const Character: React.FC<{
   const [characterState, setCharacterState] = useState(CharacterState.Idle)
 
   /* Root motion */
-  const [finished, setFinished] = useState(false)
-  const { x, z } = useSpring({
+  const moveTarget = useRef<Vector2>()
+  const { x, z, ry } = useSpring({
     delay: crossfadeDuration * 0.5 * 1000,
-    from: { x: moveFrom.x, z: moveFrom.y },
+    from: { x: moveFrom.x, z: moveFrom.y, ry: Math.PI / 2.0 },
     to: async (animate) => {
-      if (moveFrom.equals(moveTo)) {
+      if (
+        moveFrom.equals(moveTo) ||
+        (moveTarget.current && moveTo.equals(moveTarget.current))
+      ) {
         return animate({
           to: { x: moveTo.x, z: moveTo.y },
-          config: {
-            duration: 0,
-          },
+          config: { duration: 0 },
         })
       }
-      if (finished) {
-        return
-      }
+
+      await animate({
+        delay: crossfadeDuration * 0.5 * 1000,
+        to: { ry: 0 },
+        config: { duration: 125 },
+      })
 
       setCharacterState(CharacterState.Running)
 
-      await delay(crossfadeDuration * 0.5 * 1000)
-
-      // TODO: Replace with pathfinder
       await animate({
+        delay: crossfadeDuration * 0.5 * 1000,
         to: { x: moveTo.x, z: moveTo.y },
         config: {
           duration: moveFrom.distanceTo(moveTo) * runSpeed,
         },
       })
 
-      setCharacterState(CharacterState.Idle)
+      moveTarget.current = moveTo
 
-      setFinished(true)
+      setCharacterState(CharacterState.Idle)
     },
   })
 
   /* Character logic */
   useEffect(() => {
-    /* Procedural movement */
-
     // Update moveFrom if changed
     const originPosition = netcode.origin?.position ?? new Vector2()
     if (!moveFrom.equals(originPosition)) {
@@ -80,7 +81,7 @@ export const Character: React.FC<{
   }, [moveFrom, moveTo, netcode.origin, netcode.replay])
 
   return (
-    <animated.group position-x={x} position-z={z}>
+    <animated.group position-x={x} position-z={z} rotation-y={ry}>
       {props.skin({ state: characterState })}
     </animated.group>
   )

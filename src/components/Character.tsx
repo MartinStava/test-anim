@@ -11,8 +11,6 @@ export const Character: React.FC<{
   characterId: string
   skin: CharacterSkin
 }> = (props) => {
-  console.log("render")
-
   /* Netcode state */
   const netcode = useGameStore(
     (state) => ({
